@@ -1875,7 +1875,7 @@ SaveManager:LoadAutoloadConfig()
 ]]
 
 repeat task.wait(0.25) until game:IsLoaded();
-getgenv().Image = "rbxassetid://90870073103155"; -- put a asset id in here to make it work
+getgenv().Image = "rbxassetid://130997882132914"; -- put a asset id in here to make it work
 getgenv().ToggleUI = "LeftControl" -- This where you can Toggle the Fluent ui library
 
 task.spawn(function()
