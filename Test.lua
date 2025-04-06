@@ -238,7 +238,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 
 local Window = Fluent:CreateWindow({
     Title = "Etherbyte Hub | Arise Crossover",
-    SubTitle = "By Kazona",
+    SubTitle = "By Dantes PREMNIUM",
     TabWidth = 140,
     Size = UDim2.fromOffset(450, 350),
     Acrylic = false,
@@ -1843,7 +1843,7 @@ Tabs.Discord:AddButton({
     Title = "Copy Discord Link",
     Description = "Copies the Discord invite link to clipboard",
     Callback = function()
-        setclipboard("https://discord.gg/W77Vj2HNBA")
+        setclipboard("https://discord.gg/etherbytehub")
         Fluent:Notify({
             Title = "Copied!",
             Content = "Discord link copied to clipboard.",
@@ -1875,7 +1875,9 @@ Fluent:Notify({
 })
 
 SaveManager:LoadAutoloadConfig()
-
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
 
 repeat task.wait(0.25) until game:IsLoaded();
 getgenv().Image = "rbxassetid://130997882132914"; -- put a asset id in here to make it work
