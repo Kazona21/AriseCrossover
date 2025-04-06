@@ -13,10 +13,10 @@ local teleportEnabled = false
 local killedNPCs = {}
 local dungeonkill = {}
 local selectedMobName = ""
-local movementMethod = "Tween"
-local farmingStyle = "Default"
+local movementMethod = "Tween" -- Default movement method
+local farmingStyle = "Default" -- Default farming style
 
-
+-- Auto-detect new HumanoidRootPart when player resets
 player.CharacterAdded:Connect(function(newCharacter)
     character = newCharacter
     hrp = newCharacter:WaitForChild("HumanoidRootPart")
@@ -231,14 +231,14 @@ local function attackEnemy()
     end
 end
 
-
+-- Farm Method Selection Dropdown
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "Etherbyte Hub | Arise Crossover",
-    SubTitle = "By Dantes PREMNIUM",
+    SubTitle = "By Kazona",
     TabWidth = 140,
     Size = UDim2.fromOffset(450, 350),
     Acrylic = false,
@@ -264,8 +264,8 @@ Tabs.Main:AddInput("Input", {
     Placeholder = "Type Here",
     Callback = function(text)
         selectedMobName = text
-        killedNPCs = {} 
-        print("Selected Mob:", selectedMobName) 
+        killedNPCs = {} -- Reset killed NPCs when changing mob
+        print("Selected Mob:", selectedMobName) -- Debugging
     end
 })
 
@@ -274,8 +274,8 @@ Tabs.Main:AddToggle("FarmSelectedMob", {
     Default = false,
     Callback = function(state)
         teleportEnabled = state
-        damageEnabled = state 
-        killedNPCs = {} 
+        damageEnabled = state -- Ensures damage mobs is active
+        killedNPCs = {} -- Reset killed NPCs when enabling farm
         if state then
             task.spawn(teleportToSelectedEnemy)
         end
@@ -297,7 +297,7 @@ local Dropdown = Tabs.Main:AddDropdown("MovementMethod", {
     Title = "Farming Method",
     Values = {"Tween", "Teleport"},
     Multi = false,
-    Default = 1,
+    Default = 1, -- Default to "Tween"
     Callback = function(option)
         movementMethod = option
     end
@@ -364,13 +364,15 @@ local function SetSpawnAndReset(spawnName)
     local remote = game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent")
     remote:FireServer(unpack(args))
 
+    -- Wait a moment before resetting (optional, to ensure spawn is set)
     task.wait(0.5)
 
+    -- Reset Character
     local player = game.Players.LocalPlayer
 if player.Character and player.Character.Parent then
     local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then
-        humanoid.Health = 0
+        humanoid.Health = 0 -- This triggers a natural death without abruptly deleting the character
     end
 end
 
@@ -380,7 +382,7 @@ Tabs.tp:AddButton({
     Title = "Brum Island",
     Description = "Set spawn & reset",
     Callback = function()
-        SetSpawnAndReset("OPWorld")
+        SetSpawnAndReset("OPWorld") -- Change to correct spawn name
     end
 })
 
@@ -422,27 +424,28 @@ local TweenService = game:GetService("TweenService")
 
 
 
+-- Get Player and HumanoidRootPart
 local TweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
 
-
+-- Update HRP when character respawns
 player.CharacterAdded:Connect(function(newCharacter)
     character = newCharacter
-    hrp = character:WaitForChild("HumanoidRootPart") 
+    hrp = character:WaitForChild("HumanoidRootPart") -- Get the new HRP after respawn
 end)
 
-
+-- Tween Function (Now always uses the latest HRP)
 local function teleportWithTween(targetCFrame)
     if hrp then
         local tweenInfo = TweenInfo.new(
-            2, 
+            2, -- Duration (seconds)
             Enum.EasingStyle.Sine,
             Enum.EasingDirection.Out,
-            0, 
-            false, 
-            0 
+            0, -- No repeat
+            false, -- No reverse
+            0 -- No delay
         )
 
         local tweenGoal = {CFrame = targetCFrame}
@@ -452,6 +455,7 @@ local function teleportWithTween(targetCFrame)
 end
 
 
+-- Locations List
 local locations = {
     {Name = "Location 1", CFrame = CFrame.new(-6161.25781, 140.639832, 5512.9668, -0.41691944, -8.07482721e-08, 0.908943415, -2.94452178e-07, 1, -4.62235228e-08, -0.908943415, -2.86911842e-07, -0.41691944)},
     {Name = "Location 2", CFrame = CFrame.new(-5868.44141, 132.70488, 362.519379, 0.836233854, -7.47273816e-08, -0.548372984, 2.59595481e-07, 1, 2.59595481e-07, 0.548372984, -3.59437678e-07, 0.836233854)},
@@ -464,6 +468,7 @@ local locations = {
     
 }
 
+-- Add buttons for each location
 for _, loc in ipairs(locations) do
     Tabs.mount:AddButton({
         Title = loc.Name,
@@ -477,6 +482,7 @@ end
 local autoDestroy = false
 local autoArise = false
 
+-- Function to Fire DestroyPrompt
 
 
 local enemiesFolder = workspace:WaitForChild("__Main"):WaitForChild("__Enemies"):WaitForChild("Client")
@@ -484,7 +490,7 @@ local enemiesFolder = workspace:WaitForChild("__Main"):WaitForChild("__Enemies")
 
 local function fireDestroy()
     while autoDestroy do
-        task.wait(0.3)  
+        task.wait(0.3)  -- Delay to prevent overloading
 
         for _, enemy in ipairs(enemiesFolder:GetChildren()) do
             if enemy:IsA("Model") then
@@ -502,14 +508,14 @@ end
 
 
 
-
+-- Function to Fire ArisePrompt
 
 local enemiesFolder = workspace:WaitForChild("__Main"):WaitForChild("__Enemies"):WaitForChild("Client")
 
 
 local function fireArise()
     while autoArise do
-        task.wait(0.3)  
+        task.wait(0.3)  -- Delay to prevent overloading
 
         for _, enemy in ipairs(enemiesFolder:GetChildren()) do
             if enemy:IsA("Model") then
@@ -529,7 +535,7 @@ end
 
 
 
-
+-- Auto Destroy Toggle
 Tabs.Main:AddToggle("AutoDestroy", {
     Title = "Auto Destroy",
     Default = false,
@@ -541,7 +547,7 @@ Tabs.Main:AddToggle("AutoDestroy", {
     end
 })
 
-
+-- Auto Arise Toggle
 Tabs.Main:AddToggle("AutoArise", {
     Title = "Auto Arise",
     Default = false,
@@ -564,6 +570,7 @@ Tabs.dungeon:AddToggle("AutoDestroy", {
     end
 })
 
+-- Auto Arise Toggle
 Tabs.dungeon:AddToggle("AutoArise", {
     Title = "Auto Arise",
     Default = false,
@@ -583,14 +590,14 @@ local Workspace = game:GetService("Workspace")
 
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart") 
+local hrp = character:WaitForChild("HumanoidRootPart") -- Get HumanoidRootPart
 
 local dungeonFolder = Workspace:WaitForChild("__Main"):WaitForChild("__Dungeon")
 
-
+-- Variable to control teleporting
 local teleportingEnabled = false
 
-
+-- Function to create a dungeon
 local function createDungeon()
     print("[DEBUG] Attempting to create dungeon...")
     local args = {
@@ -606,7 +613,7 @@ local function createDungeon()
     print("[DEBUG] Create Dungeon event fired!")
 end
 
-
+-- Function to start the dungeon
 local function startDungeon()
     local dungeonInstance = dungeonFolder:FindFirstChild("Dungeon")
     if dungeonInstance then
@@ -633,32 +640,33 @@ local function startDungeon()
     end
 end
 
-
+-- Function to teleport directly to an object and bypass anti-cheat
 local function teleportToObject(object)
     if object and object:IsA("Part") then
         print("[DEBUG] Teleporting to:", object.Name)
 
-
+        -- Anti-cheat bypass
         local f = player.Character and player.Character:FindFirstChild("CharacterScripts") and player.Character.CharacterScripts:FindFirstChild("FlyingFixer")
         if f then f:Destroy() else print("blablabla bleble") end
 
         local cha = player.Character and player.Character:FindFirstChild("CharacterScripts") and player.Character.CharacterScripts:FindFirstChild("CharacterUpdater")
         if cha then cha:Destroy() print("discord") else print("Cid") end
 
+        -- Direct teleport
         hrp.CFrame = object.CFrame
         print("[DEBUG] Teleport completed to:", object.Name)
 
-        task.wait(2) 
-        createDungeon()
+        task.wait(2) -- Small delay after teleportation
+        createDungeon() -- Fire the create dungeon remote
 
-        task.wait(1) 
-        startDungeon() 
+        task.wait(1) -- Short delay before starting dungeon
+        startDungeon() -- Fire the start dungeon remote
     else
         print("[ERROR] Invalid teleport target!")
     end
 end
 
-
+-- Function to continuously teleport to objects when enabled
 local function teleportLoop()
     while teleportingEnabled do
         print("[DEBUG] Searching for dungeon objects...")
@@ -667,19 +675,19 @@ local function teleportLoop()
             if object:IsA("Part") then
                 foundObject = true
                 teleportToObject(object)
-                task.wait(1) 
+                task.wait(1) -- Prevent excessive execution
             end
         end
         if not foundObject then
             print("[WARNING] No valid dungeon objects found!")
         end
-        task.wait(0.5) 
+        task.wait(0.5) -- Delay before checking again
     end
 end
 
 
 
-
+-- Add the toggle button to start/stop teleporting
 Tabs.dungeon:AddToggle("TeleportToDungeon", {
     Title = "Teleport to Dungeon",
     Default = false,
@@ -687,7 +695,7 @@ Tabs.dungeon:AddToggle("TeleportToDungeon", {
         teleportingEnabled = state
         print("[DEBUG] Teleporting toggled:", state)
         if state then
-            task.spawn(teleportLoop) 
+            task.spawn(teleportLoop) -- Start teleporting loop when the toggle is enabled
         end
     end
 })
@@ -722,12 +730,12 @@ local function SetSpawnAndReset(spawnName)
     local remote = ReplicatedStorage:WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent")
     remote:FireServer(unpack(args))
 
-
+    -- Wait a moment before resetting (optional, to ensure spawn is set)
     task.wait(0.5)
 
-
+    -- Reset Character
     if player.Character then
-        player.Character:BreakJoints()
+        player.Character:BreakJoints() -- This forces the character to respawn
     end
 end
 
@@ -751,7 +759,7 @@ local function detectDungeon()
     end)
 end
 
-
+-- Ensure function runs
 AutoDetectToggle:OnChanged(function(value)
     if value then
         detectDungeon()
@@ -761,24 +769,24 @@ end)
 detectDungeon()
 
 local function resetAutoFarm()
+    -- Reset all toggle states and functions
+    killedNPCs = {} -- Reset NPC kills
 
-    killedNPCs = {} 
+    print("AutoFarm has been reset!") -- Print message for confirmation
 
-    print("AutoFarm has been reset!") 
-
-
+    -- Restart all functions if needed
 end
 
 task.spawn(function()
     while true do
-        task.wait(120) 
-        resetAutoFarm() 
+        task.wait(120) -- Wait for 10 seconds
+        resetAutoFarm() -- Call the reset function
     end
 end)
 
 local rankMapping = { "E", "D", "C", "B", "A", "S", "SS" }
 
-
+-- Dropdown for choosing which ranks to sell
 local SellDropdown = Tabs.pets:AddDropdown("ChooseRankToSell", {
     Title = "Choose Rank to Sell",
     Values = rankMapping,
@@ -786,7 +794,7 @@ local SellDropdown = Tabs.pets:AddDropdown("ChooseRankToSell", {
     Default = {}
 })
 
-
+-- Dropdown for choosing pets to keep
 local KeepPetsDropdown = Tabs.pets:AddDropdown("ChoosePetsToKeep", {
     Title = "Pets to Not Delete",
     Values = {},
@@ -794,7 +802,7 @@ local KeepPetsDropdown = Tabs.pets:AddDropdown("ChoosePetsToKeep", {
     Default = {}
 })
 
-
+-- Button to refresh the "Keep Pets" dropdown
 Tabs.pets:AddButton({
     Title = "Refresh Keep Pets List",
     Callback = function()
@@ -802,15 +810,15 @@ Tabs.pets:AddButton({
     end
 })
 
-
+-- Function to get pets by selected rank
 local function getPetsByRank(selectedRanks, keepPets)
     local player = game:GetService("Players").LocalPlayer
     local petsFolder = player.leaderstats.Inventory:FindFirstChild("Pets")
     if not petsFolder then return {} end
 
-    local petsByRank = {}  
-    local petsToSell = {}  
-    local keepOnePet = {}  
+    local petsByRank = {}  -- Store pets by rank
+    local petsToSell = {}  -- Pets that will be sold
+    local keepOnePet = {}  -- Ensure only 1 pet of each chosen type is kept
 
     for _, pet in ipairs(petsFolder:GetChildren()) do
         local rankValue = pet:GetAttribute("Rank")
@@ -822,22 +830,23 @@ local function getPetsByRank(selectedRanks, keepPets)
         end
     end
 
+    -- Process each rank
     for rank, petList in pairs(petsByRank) do
-        table.sort(petList) 
+        table.sort(petList) -- Sort pets for consistency
 
         local keptOne = false
         for _, pet in ipairs(petList) do
             if keepPets[pet] then
                 if not keepOnePet[pet] then
-                    keepOnePet[pet] = true 
+                    keepOnePet[pet] = true -- Keep only 1 copy of this pet
                     keptOne = true
                 else
-                    table.insert(petsToSell, pet) 
+                    table.insert(petsToSell, pet) -- Sell extra copies
                 end
             elseif not keptOne then
-                keptOne = true 
+                keptOne = true -- Ensure at least 1 pet per rank is kept
             else
-                table.insert(petsToSell, pet) 
+                table.insert(petsToSell, pet) -- Sell remaining pets
             end
         end
     end
@@ -845,6 +854,7 @@ local function getPetsByRank(selectedRanks, keepPets)
     return petsToSell
 end
 
+-- Function to sell pets
 local function sellPets()
     local selectedRanks = SellDropdown.Value
     local keepPets = KeepPetsDropdown.Value
@@ -864,38 +874,38 @@ local function sellPets()
     end
 end
 
-
+-- Function to update the "Keep Pets" dropdown
 function updateKeepPetsDropdown()
     local player = game:GetService("Players").LocalPlayer
     local petsFolder = player.leaderstats.Inventory:FindFirstChild("Pets")
     if not petsFolder then return end
 
-    local petNames = {} 
+    local petNames = {} -- Array for dropdown
 
     for _, pet in ipairs(petsFolder:GetChildren()) do
         if not table.find(petNames, pet.Name) then
-            table.insert(petNames, pet.Name) 
+            table.insert(petNames, pet.Name) -- Add pet names only once
         end
     end
 
-    KeepPetsDropdown:SetValues(petNames) 
+    KeepPetsDropdown:SetValues(petNames) -- Update dropdown with pet names
 end
 
-
+-- Start the selling loop
 local function startSellingLoop()
     while true do
         sellPets()
-        wait(1) 
+        wait(1) -- Prevent spamming
     end
 end
 
-
+-- Run the loop in a separate thread
 spawn(startSellingLoop)
 
-
+-- Initialize pet dropdown on start
 updateKeepPetsDropdown()
 
-
+-- Refresh pet list when dropdown changes
 SellDropdown:OnChanged(updateKeepPetsDropdown)
 KeepPetsDropdown:OnChanged(updateKeepPetsDropdown)
 
@@ -910,18 +920,20 @@ local AntiAfkToggle = Tabs.Player:AddToggle("AntiAfk", {
     Callback = function(enabled)
         if enabled then
             print("Anti AFK Enabled")
+            -- Ensure we don't create multiple connections
             if not antiAfkConnection then
                 antiAfkConnection = LocalPlayer.Idled:Connect(function()
                     VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-                    task.wait(1) 
+                    task.wait(1) -- Adjustable wait time
                     VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
                 end)
             end
         else
             print("Anti AFK Disabled")
+            -- Disconnect the event when disabling
             if antiAfkConnection then
                 antiAfkConnection:Disconnect()
-                antiAfkConnection = nil
+                antiAfkConnection = nil -- Reset the connection variable
             end
         end
     end
@@ -931,35 +943,35 @@ local AntiAfkToggle = Tabs.Player:AddToggle("AntiAfk", {
 
 local function getUniqueWeaponNames()
     local weapons = {}
-    local seenNames = {} 
+    local seenNames = {} -- To track unique names
 
     local playerWeapons = game:GetService("Players").LocalPlayer.leaderstats.Inventory.Weapons:GetChildren()
-    print("Fetching weapons...") 
+    print("Fetching weapons...") -- DEBUG
 
     for _, weapon in ipairs(playerWeapons) do
-        local weaponName = weapon:GetAttribute("Name") 
+        local weaponName = weapon:GetAttribute("Name") -- Get "Name" attribute
         if weaponName then
-            print("Found Weapon:", weaponName) 
+            print("Found Weapon:", weaponName) -- DEBUG
             if not seenNames[weaponName] then
                 table.insert(weapons, weaponName)
-                seenNames[weaponName] = true 
+                seenNames[weaponName] = true -- Mark name as seen
             end
         end
     end
     return weapons
 end
 
-
+-- Populate dropdown with **unique** weapon names
 local weaponNames = getUniqueWeaponNames()
 local WeaponDropdown = Tabs.misc:AddDropdown("WeaponDropdown", {
     Title = "Select Weapon to Upgrade",
     Description = "Choose a weapon to upgrade",
     Values = weaponNames,
-    Multi = false, 
+    Multi = false, -- Single selection
     Default = ""
 })
 
-
+-- Dropdown for selecting upgrade level (2-6)
 local LevelDropdown = Tabs.misc:AddDropdown("LevelDropdown", {
     Title = "Select Upgrade Level",
     Description = "Choose the level for upgrade",
@@ -968,7 +980,7 @@ local LevelDropdown = Tabs.misc:AddDropdown("LevelDropdown", {
     Default = "2"
 })
 
-
+-- Toggle for Auto Upgrade Weapon
  local AutoUpgradeToggle = Tabs.misc:AddToggle("AutoUpgradeToggle", { Title = "Auto Upgrade Weapon", Default = false })
 
 local function AutoUpgradeWeapon()
@@ -991,14 +1003,14 @@ local function AutoUpgradeWeapon()
             }
 
             game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
-            task.wait(0.1) 
+            task.wait(0.1) -- Adjust delay if needed
         else
             Fluent:Notify({
                 Title = "Error",
                 Content = "Please select a weapon before upgrading.",
                 Duration = 5
             })
-            print("ERROR: No weapon selected!") 
+            print("ERROR: No weapon selected!") -- DEBUG
             break
         end
     end
@@ -1006,7 +1018,7 @@ end
 
 AutoUpgradeToggle:OnChanged(function(Value)
     if Value then
-        task.spawn(AutoUpgradeWeapon) 
+        task.spawn(AutoUpgradeWeapon) -- Start upgrading in a separate thread
     end
 end)
 
@@ -1081,7 +1093,7 @@ function TPReturner()
                     game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, Players.LocalPlayer)
                 end)
                 wait(4)
-                break 
+                break -- Exit the loop after finding a suitable server to teleport to
             end
         end
     end
@@ -1136,7 +1148,7 @@ local function checkMountsAndTeleport()
         tweenTeleport(targetPosition)
 
         if DelayToggle then
-            task.wait(15)  
+            task.wait(15)  -- Waits 15 seconds ONLY if toggle is enabled
         end
 
         fireProximityPrompts()
@@ -1183,24 +1195,25 @@ end)
 
 local function getUniquePetNames()
     local pets = {}
-    local seenNames = {}
+    local seenNames = {} -- To track unique names
 
     local playerPets = game:GetService("Players").LocalPlayer.leaderstats.Inventory.Pets:GetChildren()
-    print("Fetching pets...")
+    print("Fetching pets...") -- DEBUG
 
     for _, pet in ipairs(playerPets) do
-        local petName = pet:GetAttribute("Name") 
+        local petName = pet:GetAttribute("Name") -- Get "Name" attribute
         if petName then
-            print("Found Pet:", petName) 
+            print("Found Pet:", petName) -- DEBUG
             if not seenNames[petName] then
                 table.insert(pets, petName)
-                seenNames[petName] = true 
+                seenNames[petName] = true -- Mark name as seen
             end
         end
     end
     return pets
 end
 
+-- Populate dropdown with **unique** pet names
 
 
 
@@ -1392,8 +1405,8 @@ end
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-local speedValue = 16
-local jumpValue = 50  
+local speedValue = 16 -- Default WalkSpeed
+local jumpValue = 50  -- Default JumpPower
 local speedEnabled = false
 local jumpEnabled = false
 
@@ -1405,7 +1418,7 @@ local function updateCharacter()
     end
 end
 
-
+-- Speed Input
 local SpeedInput = Tabs.Player:AddInput("SpeedInput", {
     Title = "Speed",
     Default = tostring(speedValue),
@@ -1414,11 +1427,11 @@ local SpeedInput = Tabs.Player:AddInput("SpeedInput", {
     Finished = true, 
     Callback = function(Value)
         speedValue = tonumber(Value) or 16
-        updateCharacter() 
+        updateCharacter() -- Update character immediately when speed is changed
     end
 })
 
-
+-- Jump Power Input
 local JumpInput = Tabs.Player:AddInput("JumpInput", {
     Title = "Jump Power",
     Default = tostring(jumpValue),
@@ -1427,11 +1440,11 @@ local JumpInput = Tabs.Player:AddInput("JumpInput", {
     Finished = true, 
     Callback = function(Value)
         jumpValue = tonumber(Value) or 50
-        updateCharacter() 
+        updateCharacter() -- Update character immediately when jump power is changed
     end
 })
 
-
+-- Speed Toggle
 local SpeedToggle = Tabs.Player:AddToggle("SpeedToggle", {
     Title = "Enable Speed",
     Default = false
@@ -1439,10 +1452,10 @@ local SpeedToggle = Tabs.Player:AddToggle("SpeedToggle", {
 
 SpeedToggle:OnChanged(function(Value)
     speedEnabled = Value
-    updateCharacter() 
+    updateCharacter() -- Update character immediately when toggle is changed
 end)
 
-
+-- Jump Power Toggle
 local JumpToggle = Tabs.Player:AddToggle("JumpToggle", {
     Title = "Enable Jump Power",
     Default = false
@@ -1450,16 +1463,16 @@ local JumpToggle = Tabs.Player:AddToggle("JumpToggle", {
 
 JumpToggle:OnChanged(function(Value)
     jumpEnabled = Value
-    updateCharacter() 
+    updateCharacter() -- Update character immediately when toggle is changed
 end)
 
-
+-- Update character on respawn
 LocalPlayer.CharacterAdded:Connect(function()
-    task.wait(1) 
+    task.wait(1) -- Wait for the character to fully load
     updateCharacter()
 end)
 
-
+-- Initial update
 updateCharacter()
 
 local player = game.Players.LocalPlayer
@@ -1474,12 +1487,12 @@ local function tweenCharacter(targetCFrame)
     end
 end
 
-
+-- Add button
 Tabs.tp:AddButton({
     Title = "Tween to Dedu island",
     Description = "Smoothly moves your character",
     Callback = function()
-        tweenCharacter(CFrame.new(3859.06299, 60.1228409, 3081.9458, -0.987112403, 6.46206388e-07, -0.160028473, 5.63319077e-07, 1, 5.63319418e-07, 0.160028473, 4.65912507e-07, -0.987112403))
+        tweenCharacter(CFrame.new(3859.06299, 60.1228409, 3081.9458, -0.987112403, 6.46206388e-07, -0.160028473, 5.63319077e-07, 1, 5.63319418e-07, 0.160028473, 4.65912507e-07, -0.987112403)) -- Change this to your desired position
     end
 })
 
@@ -1490,7 +1503,7 @@ local NoClipToggle = Tabs.Player:AddToggle("NoClipToggle", {
     Default = false
 })
 
-
+-- NoClip function
 local noclipEnabled = false
 NoClipToggle:OnChanged(function(Value)
     noclipEnabled = Value
@@ -1588,7 +1601,7 @@ Tabs.dungeon:AddToggle("AutoBuyDungeonTicket", {
                     }
 
                     game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
-                    task.wait(5) 
+                    task.wait(5) -- Wait 5 seconds before firing again
                 end
             end)
         end
@@ -1628,6 +1641,7 @@ local function findClosestTarget()
         if enemy:IsA("Model") and enemy:FindFirstChild("HumanoidRootPart") then
             local enemyType = enemy:GetAttribute("ID")
             
+            -- Ensure the script ignores dead enemies
             if not defeatedEnemies[enemy.Name] then
                 local distance = (playerPos - enemy:GetPivot().Position).Magnitude
                 
@@ -1645,6 +1659,7 @@ local function findClosestTarget()
         end
     end
 
+    -- Priority: JJ2 > JJ3 > JJ4
     return closestJJ2 or closestJJ3 or closestJJ4
 end
 
@@ -1671,7 +1686,7 @@ local function startAutoFarm()
             local playerHRP = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
 
             if targetHRP and playerHRP then
-              
+                -- Move to target enemy
                 playerHRP.CFrame = targetHRP.CFrame * CFrame.new(0, 0, 6)
 
                 task.wait(0.5)
@@ -1687,16 +1702,16 @@ local function startAutoFarm()
                     "\7"
                 })
 
-                
+                -- Wait until enemy is defeated or a higher-priority one appears
                 while autoFarmActive and targetEnemy.Parent do
                     if isTargetDefeated(targetEnemy) then
-                        defeatedEnemies[targetEnemy.Name] = true 
+                        defeatedEnemies[targetEnemy.Name] = true -- Mark it as dead immediately
                         break
                     end
                     
                     task.wait(0.1)
                     
-                    
+                    -- Switch if a higher-priority target appears
                     local newTarget = findClosestTarget()
                     if newTarget and newTarget:GetAttribute("ID") == "JJ2" and newTarget ~= targetEnemy then
                         break
@@ -1706,7 +1721,7 @@ local function startAutoFarm()
                 end
             end
 
-            targetEnemy = findClosestTarget() 
+            targetEnemy = findClosestTarget() -- Move to next enemy
         end
 
         task.wait(0.20)
@@ -1737,7 +1752,7 @@ local Inventory = LocalPlayer:FindFirstChild("leaderstats") and LocalPlayer.lead
 local SelectedLevel = 1
 local SellingEnabled = false
 
-
+-- Dropdown for selecting the weapon level (moved to Misc tab)
 local Dropdown = Tabs.misc:AddDropdown("WeaponLevel", {
     Title = "Select Weapon Level",
     Values = {"1", "2", "4", "5", "6", "7"},
@@ -1749,14 +1764,14 @@ Dropdown:OnChanged(function(Value)
     SelectedLevel = tonumber(Value)
 end)
 
-
+-- Toggle for auto-selling (moved to Misc tab)
 local Toggle = Tabs.misc:AddToggle("AutoSell", { Title = "Auto-Sell Weapons", Default = false })
 
 Toggle:OnChanged(function(Value)
     SellingEnabled = Value
 end)
 
-
+-- Function to sell weapons based on the selected level
 local function SellWeapons()
     if not Inventory or not SellingEnabled then return end
     
@@ -1779,7 +1794,7 @@ local function SellWeapons()
     end
 end
 
-
+-- Loop to continuously check for weapons to sell
 task.spawn(function()
     while task.wait(0.5) do
         if SellingEnabled then
@@ -1804,23 +1819,24 @@ local function EnterDungeon()
         }
 
         game:GetService("ReplicatedStorage"):WaitForChild("BridgeNet2"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
-        task.wait(0.5) 
+        task.wait(0.5) -- Adjust delay if needed
     end
 end
 
 AutoEnterDungeon:OnChanged(function(Value)
     if Value then
-        task.spawn(EnterDungeon) 
+        task.spawn(EnterDungeon) -- Start loop when enabled
     end
 end)
 
 Tabs.Discord:AddParagraph({
-    Title = "Welcome to Arise Crossover ",
-    Content = "Dev : Kazona \n\n" ..
-              "Anti-Cheat Bypass Roblox \n" ..
-              "Script Hiện Tại Là Bản [ BETA ]\n" ..
-              "Sẽ Cập Nhật GetKey Vào : 30/04/2025\n" ..
-              "Script Update : 01/04/2025\n\n" ..
+    Title = "🎉 Welcome to Etherbyte Hub Premium!",
+    Content = "Unlock the best experience with our premium features!\n\n" ..
+              "✅ **Advanced Anti-Cheat Bypass** – Stay undetected and safe.\n" ..
+              "⚡ **Faster Execution & Optimization** – Enjoy smoother gameplay.\n" ..
+              "🔄 **Exclusive Updates** – Get early access to new features.\n" ..
+              "🎁 **Premium Support & Community** – Connect with other elite users.\n\n" ..
+              "Upgrade now and enhance your gaming experience!"
 })
 
 Tabs.Discord:AddButton({
@@ -1844,8 +1860,8 @@ Tabs.Discord:AddButton({
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
-InterfaceManager:SetFolder("KazonaScript")
-SaveManager:SetFolder("KazonaScript/AriseCrossover")
+InterfaceManager:SetFolder("EtherScriptHub")
+SaveManager:SetFolder("EtherScriptHub/AriseCrossover")
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
@@ -1853,19 +1869,17 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = "Arise Crossover !",
+    Title = "Etherbyte Hub",
     Content = "Script Loaded!",
     Duration = 3
 })
 
 SaveManager:LoadAutoloadConfig()
-[[
 
-]]
 
 repeat task.wait(0.25) until game:IsLoaded();
-getgenv().Image = "rbxassetid://130997882132914"; 
-getgenv().ToggleUI = "LeftControl" 
+getgenv().Image = "rbxassetid://130997882132914"; -- put a asset id in here to make it work
+getgenv().ToggleUI = "LeftControl" -- This where you can Toggle the Fluent ui library
 
 task.spawn(function()
     if not getgenv().LoadedMobileUI == true then getgenv().LoadedMobileUI = true
