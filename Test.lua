@@ -1864,7 +1864,7 @@ SaveManager:LoadAutoloadConfig()
 ]]
 
 repeat task.wait(0.25) until game:IsLoaded();
-getgenv().Image = "rbxassetid://90870073103155"; 
+getgenv().Image = "rbxassetid://130997882132914"; 
 getgenv().ToggleUI = "LeftControl" 
 
 task.spawn(function()
