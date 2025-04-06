@@ -248,61 +248,15 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
--- Thêm các tab vào cửa sổ
-Discord = Window:AddTab({ 
-    Title = "INFO", 
-    Icon = "info",
-    BackgroundColor = Color3.fromRGB(60, 60, 60),  -- Màu nền tab
-    TextColor = Color3.fromRGB(255, 255, 255),  -- Màu chữ
-}),
-Main = Window:AddTab({ 
-    Title = "Main", 
-    Icon = "home",  -- Thêm biểu tượng home
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-tp = Window:AddTab({ 
-    Title = "Teleports", 
-    Icon = "teleport",  -- Thêm biểu tượng teleport
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-mount = Window:AddTab({ 
-    Title = "Mount Location/farm", 
-    Icon = "horse",  -- Thêm biểu tượng ngựa
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-dungeon = Window:AddTab({ 
-    Title = "Dungeon", 
-    Icon = "dungeon",  -- Thêm biểu tượng dungeon
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-pets = Window:AddTab({ 
-    Title = "Pets", 
-    Icon = "pet",  -- Thêm biểu tượng pet
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-Player = Window:AddTab({ 
-    Title = "Player", 
-    Icon = "user",  -- Thêm biểu tượng người chơi
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-misc = Window:AddTab({ 
-    Title = "Misc", 
-    Icon = "wrench",  -- Thêm biểu tượng công cụ
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}),
-Settings = Window:AddTab({ 
-    Title = "Settings", 
-    Icon = "settings",
-    BackgroundColor = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-})
+    Discord = Window:AddTab({ Title = "INFO", Icon = "info"}),
+    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
+    tp = Window:AddTab({ Title = "Teleports", Icon = "teleport" }),
+    mount = Window:AddTab({ Title = "Mount Location/farm", Icon = "horse" }),
+    dungeon = Window:AddTab({ Title = "Dungeon ", Icon = "dungeon" }),
+    pets = Window:AddTab({ Title = "Pets ", Icon = "pet" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "user" }),
+    misc = Window:AddTab({ Title = "misc", Icon = "wrench" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
 Tabs.Main:AddInput("Input", {
