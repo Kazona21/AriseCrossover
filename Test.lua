@@ -1,3 +1,4 @@
+
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
@@ -248,13 +249,13 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     Discord = Window:AddTab({ Title = "INFO", Icon = "info"}),
-    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
-    tp = Window:AddTab({ Title = "Teleports", Icon = "teleport" }),
-    mount = Window:AddTab({ Title = "Mount Location/farm", Icon = "horse" }),
-    dungeon = Window:AddTab({ Title = "Dungeon ", Icon = "dungeon" }),
-    pets = Window:AddTab({ Title = "Pets ", Icon = "pet" }),
-    Player = Window:AddTab({ Title = "Player", Icon = "user" }),
-    misc = Window:AddTab({ Title = "misc", Icon = "wrench" }),
+    Main = Window:AddTab({ Title = "Main", Icon = "" }),
+    tp = Window:AddTab({ Title = "Teleports", Icon = "" }),
+    mount = Window:AddTab({ Title = "Mount Location/farm", Icon = "" }),
+    dungeon = Window:AddTab({ Title = "Dungeon ", Icon = "" }),
+    pets = Window:AddTab({ Title = "Pets ", Icon = "" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "" }),
+    misc = Window:AddTab({ Title = "misc", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
