@@ -237,8 +237,8 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Etherbyte Hub | Arise Crossover",
-    SubTitle = "By Dantes PREMNIUM",
+    Title = "JFF Hub | Arise Crossover",
+    SubTitle = "By Kazona",
     TabWidth = 140,
     Size = UDim2.fromOffset(450, 350),
     Acrylic = false,
@@ -1830,20 +1830,15 @@ AutoEnterDungeon:OnChanged(function(Value)
 end)
 
 Tabs.Discord:AddParagraph({
-    Title = "🎉 Welcome to Etherbyte Hub Premium!",
-    Content = "Unlock the best experience with our premium features!\n\n" ..
-              "✅ **Advanced Anti-Cheat Bypass** – Stay undetected and safe.\n" ..
-              "⚡ **Faster Execution & Optimization** – Enjoy smoother gameplay.\n" ..
-              "🔄 **Exclusive Updates** – Get early access to new features.\n" ..
-              "🎁 **Premium Support & Community** – Connect with other elite users.\n\n" ..
-              "Upgrade now and enhance your gaming experience!"
+    Title = "🎉 Welcome to Arise Crosser!",
+    Content = "Dev : Kazona | Owner : JFF Hub!" ..
 })
 
 Tabs.Discord:AddButton({
     Title = "Copy Discord Link",
     Description = "Copies the Discord invite link to clipboard",
     Callback = function()
-        setclipboard("https://discord.gg/etherbytehub")
+        setclipboard("https://discord.gg/W77Vj2HNBA")
         Fluent:Notify({
             Title = "Copied!",
             Content = "Discord link copied to clipboard.",
@@ -1860,8 +1855,8 @@ Tabs.Discord:AddButton({
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
-InterfaceManager:SetFolder("EtherScriptHub")
-SaveManager:SetFolder("EtherScriptHub/AriseCrossover")
+InterfaceManager:SetFolder("JffScriptHub")
+SaveManager:SetFolder("JffScriptHub/AriseCrossover")
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
@@ -1869,7 +1864,7 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = "Etherbyte Hub",
+    Title = "JFF Hub",
     Content = "Script Loaded!",
     Duration = 3
 })
@@ -1880,7 +1875,7 @@ SaveManager:LoadAutoloadConfig()
 ]]
 
 repeat task.wait(0.25) until game:IsLoaded();
-getgenv().Image = "rbxassetid://130997882132914"; -- put a asset id in here to make it work
+getgenv().Image = "rbxassetid://90870073103155"; -- put a asset id in here to make it work
 getgenv().ToggleUI = "LeftControl" -- This where you can Toggle the Fluent ui library
 
 task.spawn(function()
