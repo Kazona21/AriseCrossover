@@ -1830,8 +1830,13 @@ AutoEnterDungeon:OnChanged(function(Value)
 end)
 
 Tabs.Discord:AddParagraph({
-    Title = "🎉 Welcome to Arise Crosser!",
-    Content = "Dev : Kazona | Owner : JFF Hub!" ..
+    Title = "🎉 Welcome to Etherbyte Hub Premium!",
+    Content = "Unlock the best experience with our premium features!\n\n" ..
+              "✅ **Advanced Anti-Cheat Bypass** – Stay undetected and safe.\n" ..
+              "⚡ **Faster Execution & Optimization** – Enjoy smoother gameplay.\n" ..
+              "🔄 **Exclusive Updates** – Get early access to new features.\n" ..
+              "🎁 **Premium Support & Community** – Connect with other elite users.\n\n" ..
+              "Upgrade now and enhance your gaming experience!"
 })
 
 Tabs.Discord:AddButton({
